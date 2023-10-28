@@ -17,3 +17,25 @@ const transformer = function (str, fn) {
 };
 
 transformer('Javascript is the best!', upperFirstWord);
+
+// Function returning function
+
+console.log('------------ Function Returning Function ---------------');
+
+// const greet = function (greeting) {
+//   return function (name) {
+//     console.log(`${greeting} ${name}`);
+//   };
+// };
+
+// const greetHey = greet('Hey');
+// greetHey('Jonas');
+// greetHey('Manoj');
+// greet('Hello')('Lokendra');
+
+//re-write function return function using arrow function
+
+const greet = greeting => name => console.log(`${greeting} ${name}`);
+const greetHey = greet('Hey');
+greetHey('Swastima');
+greet('Hello')('Nepal');
