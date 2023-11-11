@@ -80,7 +80,7 @@ const displayMovements = function (movements, sort = false) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
 
@@ -94,7 +94,7 @@ displayMovements(account1.movements);
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${acc.balance} €`;
+  labelBalance.textContent = `${acc.balance.toFixed(2)} €`;
 };
 
 calcDisplayBalance(account1);
@@ -105,12 +105,12 @@ const calcDisplaySummary = function (acc) {
   const income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov);
-  labelSumIn.textContent = `${income} €`;
+  labelSumIn.textContent = `${income.toFixed(2)} €`;
 
   const outcome = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(outcome)} €`;
+  labelSumOut.textContent = `${Math.abs(outcome).toFixed(2)} €`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -120,7 +120,7 @@ const calcDisplaySummary = function (acc) {
       return intr > 1;
     })
     .reduce((acc, intr) => acc + intr, 0);
-  labelSumInterest.textContent = `${interest} €`;
+  labelSumInterest.textContent = `${interest.toFixed(2)} €`;
 };
 
 calcDisplaySummary(account1);
@@ -209,7 +209,7 @@ btnTransfer.addEventListener('click', function (e) {
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
-  const amount = +inputLoanAmount.value;
+  const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
@@ -273,4 +273,83 @@ labelBalance.addEventListener('click', function () {
   console.log(movementsUI2);
 });
 
-// Math and Rounding
+/***** Math and Rounding   ********/
+console.log(Math.sqrt(25));
+// Output - 5
+console.log(25 ** (1 / 2));
+// output - 5
+console.log(8 ** (1 / 3));
+// output - 2
+
+console.log(Math.max(5, 18, 23, 11, 2));
+// outout - 23
+
+// Math.max() method does type coercion so it gives 23
+console.log(Math.max(5, 18, '23', 11, 2));
+// outout - 23
+
+// Math.max()method does not parse so gives NaN
+console.log(Math.max(5, 18, '23px', 11, 2));
+// outout - NaN
+
+console.log(Math.min(5, 18, 23, 11, 2));
+// output - 2
+
+// cacculate the area of circle - (pi * r^2)
+console.log(Math.PI * Number.parseFloat('10px') ** 2);
+// output - 314.1592653589793
+
+// create random number
+console.log(Math.trunc(Math.random() * 6) + 1);
+
+// create random integer number between min and max number
+const randomInt = (min, max) =>
+  // Math.trunc(Math.random() * (max - min) + 1) + min;
+  Math.floor(Math.random() * (max - min) + 1) + min; // floor method is better than trunc and random method
+console.log(randomInt(10, 20));
+
+// Rounding integers
+console.log(Math.trunc(22.7)); // truc only decimal value not rounded up
+// output - 22
+
+// Math.round() method
+console.log('------------ Math.round() -------------');
+console.log(Math.round(23.3));
+// output - 23
+console.log(Math.round(23.5));
+//output - 24
+console.log(Math.round(23.7));
+// output - 24
+
+// Math.ceil() method
+console.log('------------ Math.ceil() -------------');
+console.log(Math.ceil(25)); //always rounds up and returns the smallest integer greater than or equal to a given number.
+// output - 25
+console.log(Math.ceil(25.1));
+// output - 26
+console.log(Math.ceil(25.8));
+// output - 25
+
+/*
+Math.floor() method and Math.round() method are quite similar.
+*/
+console.log('------------ Math.floor() -------------');
+console.log(Math.floor(28)); //always rounds down and returns the largest integer less than or equal to a given number.
+// output - 28
+console.log(Math.floor(28.3));
+// output - 28
+console.log(Math.floor(28.8));
+// output - 28
+console.log(Math.floor(-28));
+// output - -28
+console.log(Math.floor(-28.1)); // in case of -ve value with decimal its always round down so gives -29 in below code.
+// output - -29
+console.log(Math.floor(-28.8));
+// output - 29
+
+// Rounding decimals
+console.log('-------- Rouding decimals ---------');
+console.log((2.7).toFixed(0));
+console.log((2.7).toFixed(3));
+console.log((2.345).toFixed(2));
+console.log(+(2.345).toFixed(2));
