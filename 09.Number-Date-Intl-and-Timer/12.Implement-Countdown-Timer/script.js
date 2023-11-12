@@ -226,7 +226,7 @@ const updateUI = function (acc) {
 
 const startLogoutTimer = function () {
   // Set time to 5 minutes
-  let time = 10;
+  let time = 120;
 
   const tick = function () {
     const min = String(Math.trunc(time / 60)).padStart(2, 0);
@@ -353,6 +353,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    // Reset timer - means restart the time after every operation
+    clearInterval(timer); // Here, timer is global variable which is declared in the line: 257
+    timer = startLogoutTimer(); // here old timer is cleared and new timer is started again
   }
 });
 
@@ -372,6 +376,10 @@ btnLoan.addEventListener('click', function (e) {
 
       // Update UI
       updateUI(currentAccount);
+
+      // Reset timer - means restart the time after every operation
+      clearInterval(timer); // Here, timer is global variable which is declared in the line: 257
+      timer = startLogoutTimer(); // here old timer is cleared and new timer is started again
     }, 2500);
   }
 
