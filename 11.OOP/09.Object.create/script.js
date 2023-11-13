@@ -1,131 +1,60 @@
 'use strict';
 
-/*
-  - Classes in JavaScript do not work like traditional classes in
-  other languages like Java or C++
 
-  / Classes are not hoisted
+// Topic: Obect.create
+
+/*
+  - It is a third way of implementing prototypal inheritance or delegation
+  - works on prettry different ways than constructor functions and classes work.
+  - In Object.create, there is still the idea of prototypal inheritance.
+  - However, there are no prototype properties involved.
+  - And also no constructor functions, and no new operator
+  - So, we can use Object.create to essentially manually set the prototype of an object to
+    any other object that we want.
+
  */
 
-// class expression
-//const PersonClass = class{} // Here, behind the scen class is still function
+// let's actually create an object that we want to be
+// the prototype of all the person objects.
 
-// class declaration
-class PersonClass {
-  constructor(fullName, birthYear) {
-    this.fullName = fullName;
-    this.birthYear = birthYear;
-  }
+console.log('-------- Object.create -------------');
 
-  // Instance method
-  // these methods will be added to .prototype property, so that all instances can have access to them. That's why it's called Instance Method
-  // Method will be added to .prototype property
-
+const PersonProto = {
   calcAge() {
     console.log(2023 - this.birthYear);
-  }
-
-  greet() {
-    console.log(`Hey, ${this.fullName}`);
-  }
-
-  get age() {
-    return 2023 - this.birthYear;
-  }
-
-  // set a property that already exist
-  set fullName(name) {
-    if (name.includes(' ')) this._fullName = name;
-    // here, In _fullNam, use of underscore(_) is just a convention not javascript feature. It is used to solve conflict between constructor and setter
-    else alert(`${name} is not a full name`);
-  }
-
-  // only use of setter gives _fullName property with undefined value. so, in order to solve this issue, getter must be used.
-
-  get fullName() {
-    return this._fullName;
-  }
-
-  // static method
-
-  static hey() {
-    console.log('Hey there 👋');
-    console.log(this);
-  }
-}
-
-PersonClass.hey();
-
-// const walter = new PersonClass('Walter', 1999);
-// console.log(walter);
-// Output - Give alert dialog box message: Walter is not a full name.
-
-const jessica = new PersonClass('Jessica Devis', 1996);
-console.log(jessica);
-jessica.calcAge();
-
-console.log(jessica.age);
-
-console.log(jessica.__proto__ === PersonClass.prototype);
-// Output: true
-
-// PersonClass.prototype.greet = function () {
-//   console.log(`Hey, ${this.firstName}`);
-// };
-
-jessica.greet();
-
-/*
- 1. Classes are not hoisted even they are declaration
- but function declaration are hoisted which mean we can use them before they are declared in the code.
-
- 2. Just like function, classes ate also first-class citizens
-    because classes are really special kind of functions behind the scene.
-  
-  3. Classes are executed in strict mode
-
- */
-
-// Topic: Getter and Setter
-
-// getter and setter are very useful in data validation
-
-console.log('------- Setter and Getter ------------');
-
-const account = {
-  owner: 'John',
-  movements: [200, 530, 120, 300],
-
-  get latest() {
-    // return this.movements.slice(-1);
-    // // Output = Array [ 300 ]
-
-    return this.movements.slice(-1).pop();
-    // 300
   },
 
-  set latest(mov) {
-    this.movements.push(mov);
+  // this init method looks like constructor
+  // However, this has actually nothing
+  // to do with any constructor function,
+  // because we are not using the new operator
+  // to call this we will simply do Sarah.init
+  // and then we will pass in the arguments.
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
   },
 };
 
-console.log(account.latest);
+const steven = Object.create(PersonProto);
+console.log(steven);
 
-account.movements = 50;
-console.log(account.movements);
+steven.name = 'Steven';
+steven.birthYear = 2002;
+steven.calcAge();
 
-// Topic: Static Method
+console.log(steven.__proto__ == PersonProto);
+// Output = true
 
-console.log('------------- Static Method -------------');
+// Object.create() creates a new object and and the prototype of 
+//that object will be the object that we passed in.
 
-PersonClass.hey = function () {
-  console.log('Hey there 👋');
-  console.log(this); // Output - returns constructor function of PersonClass
-};
 
-PersonClass.hey(); // This function is not inherited.
-//jessica.hey();
+// create sarah object which used PersonProto as a prototype object
+const sarah = Object.create(PersonProto);
+sarah.init('Sarah', 1979);
+sarah.calcAge();
 
-//Here, hey() function cannot call from its object becuase it is not in the
-//prototype of jessica object. So, there's no way that the jessica object
-// could inherit it.
+console.log(typeof sarah.__proto__);
+// Output - object
