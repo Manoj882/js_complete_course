@@ -12,8 +12,8 @@
 
 // class declaration
 class PersonClass {
-  constructor(firstName, birthYear) {
-    this.firstName = firstName;
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
     this.birthYear = birthYear;
   }
 
@@ -23,13 +23,35 @@ class PersonClass {
   }
 
   greet() {
-    console.log(`Hey, ${this.firstName}`);
+    console.log(`Hey, ${this.fullName}`);
+  }
+
+  get age() {
+    return 2023 - this.birthYear;
+  }
+
+  // set a property that already exist
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    // here, In _fullNam, use of underscore(_) is just a convention not javascript feature. It is used to solve conflict between constructor and setter
+    else alert(`${name} is not a full name`);
+  }
+
+  // only use of setter gives _fullName property with undefined value. so, in order to solve this issue, getter must be used.
+
+  get fullName() {
+    return this._fullName;
   }
 }
 
-const jessica = new PersonClass('Jessica', 1996);
+const walter = new PersonClass('Walter', 1999);
+console.log(walter);
+// Output - Give alert dialog box message: Walter is not a full name.
+const jessica = new PersonClass('Jessica Devis', 1996);
 console.log(jessica);
 jessica.calcAge();
+
+console.log(jessica.age);
 
 console.log(jessica.__proto__ === PersonClass.prototype);
 // Output: true
@@ -51,3 +73,30 @@ jessica.greet();
 
  */
 
+// Topic: Getter and Setter
+
+// getter and setter are very useful in data validation
+
+console.log('------- Setter and Getter ------------');
+
+const account = {
+  owner: 'John',
+  movements: [200, 530, 120, 300],
+
+  get latest() {
+    // return this.movements.slice(-1);
+    // // Output = Array [ 300 ]
+
+    return this.movements.slice(-1).pop();
+    // 300
+  },
+
+  set latest(mov) {
+    this.movements.push(mov);
+  },
+};
+
+console.log(account.latest);
+
+account.movements = 50;
+console.log(account.movements);
