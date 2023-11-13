@@ -17,7 +17,10 @@ class PersonClass {
     this.birthYear = birthYear;
   }
 
+  // Instance method
+  // these methods will be added to .prototype property, so that all instances can have access to them. That's why it's called Instance Method
   // Method will be added to .prototype property
+
   calcAge() {
     console.log(2023 - this.birthYear);
   }
@@ -42,7 +45,16 @@ class PersonClass {
   get fullName() {
     return this._fullName;
   }
+
+  // static method
+
+  static hey() {
+    console.log('Hey there 👋');
+    console.log(this);
+  }
 }
+
+PersonClass.hey();
 
 // const walter = new PersonClass('Walter', 1999);
 // console.log(walter);
@@ -101,3 +113,19 @@ console.log(account.latest);
 
 account.movements = 50;
 console.log(account.movements);
+
+// Topic: Static Method
+
+console.log('------------- Static Method -------------');
+
+PersonClass.hey = function () {
+  console.log('Hey there 👋');
+  console.log(this); // Output - returns constructor function of PersonClass
+};
+
+PersonClass.hey(); // This function is not inherited.
+//jessica.hey();
+
+//Here, hey() function cannot call from its object becuase it is not in the
+//prototype of jessica object. So, there's no way that the jessica object
+// could inherit it.
